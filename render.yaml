@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: chat-backend
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: MONGODB_URI
+        preview: YOUR_MONGODB_URI
+      - key: JWT_SECRET
+        preview: YOUR_JWT_SECRET
+      - key: CLOUDINARY_CLOUD_NAME
+        preview: YOUR_CLOUD_NAME
+      - key: CLOUDINARY_API_KEY
+        preview: YOUR_API_KEY
+      - key: CLOUDINARY_API_SECRET
+        preview: YOUR_API_SECRET
