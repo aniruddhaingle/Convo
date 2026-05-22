@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useChatStore } from '../store/useChatStore';
 import { Image, Send, X } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -39,7 +39,7 @@ const MessageInput = () => {
       });
       setText("");
       setImagePreview(null);
-      if(!fileInputRef.current) fileInputRef.current.value = ""; 
+      if (fileInputRef.current) fileInputRef.current.value = ""; 
     } catch (error) {
       console.error("Failed to send message", error);
     }

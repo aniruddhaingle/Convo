@@ -20,7 +20,7 @@ export const useChatStore = create((set, get) => ({
             set({ users: filteredUsers });
 
         } catch (error) {
-            toast.error(error.response.data.message);
+            toast.error(error.response?.data?.message || error.response?.data?.error || "An error occurred");
         } finally {
             set({ isUsersLoading: false });
         }
@@ -32,7 +32,7 @@ export const useChatStore = create((set, get) => ({
             const res = await axiosInstance.get(`/messages/${userId}`);
             set({ messages: res.data });
         } catch (error) {
-            toast.error(error.response.data.messages);
+            toast.error(error.response?.data?.message || error.response?.data?.error || "An error occurred");
         } finally {
             set({ isMessagesLoading: false });
         }
@@ -44,7 +44,7 @@ export const useChatStore = create((set, get) => ({
             const res = await axiosInstance.post(`/messages/send/${selectedUser?._id}`, messageData);
             set({ messages: [...messages, res.data] })
         } catch (error) {
-            toast.error(error.response.data.message);
+            toast.error(error.response?.data?.message || error.response?.data?.error || "An error occurred");
         }
     },
 
@@ -65,6 +65,7 @@ export const useChatStore = create((set, get) => ({
         if(!selectedUser) return;
 
         const socket = useAuthStore.getState().socket;
+        if (!socket) return;
 
         socket.on("newMessage", (newMessage) => {
             const isMessageSentMesageFromSelectedUser = newMessage.senderId === selectedUser._id
@@ -75,7 +76,7 @@ export const useChatStore = create((set, get) => ({
 
     unsubscribeFromMessage: () => {
         const socket = useAuthStore.getState().socket;
-        socket.off("newMessage");
+        if (socket) socket.off("newMessage");
     },
 
     setSelectedUser: (selectedUser) => set({ selectedUser }),
